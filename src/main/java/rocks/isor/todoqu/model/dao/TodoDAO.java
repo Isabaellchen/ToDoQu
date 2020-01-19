@@ -1,15 +1,14 @@
 package rocks.isor.todoqu.model.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import rocks.isor.todoqu.model.repository.TodoRepository;
+import rocks.isor.todoqu.model.repository.TaskRepository;
 
 @Component
 public class TodoDAO {
 
-    private final TodoRepository repository;
+    private final TaskRepository repository;
 
-    public TodoDAO(TodoRepository repository) {
+    public TodoDAO(TaskRepository repository) {
         this.repository = repository;
     }
 

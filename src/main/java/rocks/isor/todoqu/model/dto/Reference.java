@@ -17,17 +17,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Edge
-public class Todo {
+public class Reference {
 
     @Id
     @GeneratedValue
     private String id;
 
     @EdgeFrom
-    private Task parent;
+    private Task referral;
 
     @EdgeTo
-    private Task todo;
+    private Task referree;
 }
-
-

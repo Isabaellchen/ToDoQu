@@ -1,33 +1,36 @@
 package rocks.isor.todoqu.model.dto;
 
-import com.microsoft.spring.data.gremlin.annotation.Edge;
-import com.microsoft.spring.data.gremlin.annotation.EdgeFrom;
-import com.microsoft.spring.data.gremlin.annotation.EdgeTo;
 import com.microsoft.spring.data.gremlin.annotation.GeneratedValue;
+import com.microsoft.spring.data.gremlin.annotation.Vertex;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.UUID;
+
 
 @Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Edge
-public class Todo {
+@Vertex
+public class Task {
 
     @Id
     @GeneratedValue
     private String id;
 
-    @EdgeFrom
-    private Task parent;
+    private boolean done;
 
-    @EdgeTo
-    private Task todo;
+    private String title;
+
+    private String description;
+
+    private Date dueDate;
+
+    private Date procrastinateUntil;
 }
-
-
