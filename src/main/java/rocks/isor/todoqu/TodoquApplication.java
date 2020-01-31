@@ -1,66 +1,53 @@
 package rocks.isor.todoqu;
 
-import com.microsoft.spring.data.gremlin.common.GremlinFactory;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Element;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import rocks.isor.todoqu.model.dto.LifesWork;
+import rocks.isor.todoqu.model.dao.TaskDAO;
+import rocks.isor.todoqu.model.dao.TodoDAO;
 import rocks.isor.todoqu.model.dto.Task;
-import rocks.isor.todoqu.model.dto.Todo;
-import rocks.isor.todoqu.model.repository.LifesWorkRepository;
-import rocks.isor.todoqu.model.repository.TaskRepository;
-import rocks.isor.todoqu.model.repository.TodoRepository;
 
 import javax.annotation.PostConstruct;
-import java.util.UUID;
 
 @SpringBootApplication
 public class TodoquApplication {
 
 	@Autowired
-	private LifesWorkRepository graph;
+	private Graph graph;
 
 	@Autowired
-	private TaskRepository tasks;
+	private TodoDAO todos;
 
 	@Autowired
-	private TodoRepository todos;
-
-    @Autowired
-    private GremlinFactory factory;
+	private TaskDAO tasks;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TodoquApplication.class, args);
 	}
 
 	@PostConstruct
-	public void setup() throws Exception {
-		this.graph.deleteAll();
+	public void setup() {
 
-		Task firstStep = Task.builder()
-				//.id(89757L)
-				.title("The first step")
-				.description("What needs to be done?")
-				.build();
+		Task testi = tasks.create("The first step", "What needs to be done?", null, null);
+		Task testy = tasks.create("Create a Todo-Graph", "A task in a task is all we need.", null, null);
 
-		Task createGraph = Task.builder()
-				//.id(666666L)
-				.title("Create a Todo-Graph")
-				.description("A task in a task is all we need")
-				.build();
+		todos.link(testi, testy);
 
-		Todo doWork = Todo.builder()
-				//.id(2333L)
-				.parent(firstStep)
-				.todo(createGraph)
-				.build();
+		Task testee = tasks.create("Make some tasks", "Until you are done.", null, null);
 
-		LifesWork lifesWork = new LifesWork();
-		lifesWork.getVertexes().add(firstStep);
-		lifesWork.getVertexes().add(createGraph);
-		lifesWork.getEdges().add(doWork);
+		todos.link(testy, testee);
 
-		this.graph.save(lifesWork);
+		graph.vertices().forEachRemaining(vertex -> {
+			System.out.println(vertex.label());
+			vertex.properties().forEachRemaining(vertexProperty -> {
+				String propertyLabel = vertexProperty.label();
+				Object propertyValue = vertex.value(propertyLabel);
+				System.out.println(propertyLabel + ": " + propertyValue.toString());
+			});
+		});
 	}
 
 }

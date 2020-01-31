@@ -1,8 +1,0 @@
-
-gremlin:
-  endpoint: 127.0.0.1
-  port: 8182
-  username:
-  password:
-  sslEnabled: false
-  telemetryAllowed: false
