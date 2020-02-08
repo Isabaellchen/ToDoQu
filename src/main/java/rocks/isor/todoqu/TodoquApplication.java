@@ -31,12 +31,28 @@ public class TodoquApplication {
 	@PostConstruct
 	public void setup() {
 
-		Task testi = tasks.create("The first step", "What needs to be done?", null, null);
-		Task testy = tasks.create("Create a Todo-Graph", "A task in a task is all we need.", null, null);
+		Task testi = tasks.create(
+				Task.builder()
+						.title("The first step")
+						.description("What needs to be done?")
+						.build()
+		);
+
+		Task testy = tasks.create(
+				Task.builder()
+						.title("Create a Todo-Graph")
+						.description("A task in a task is all we need.")
+						.build()
+		);
 
 		todos.link(testi, testy);
 
-		Task testee = tasks.create("Make some tasks", "Until you are done.", null, null);
+		Task testee = tasks.create(
+				Task.builder()
+						.title("Make some tasks")
+						.description("Until you are done.")
+						.build()
+		);
 
 		todos.link(testy, testee);
 

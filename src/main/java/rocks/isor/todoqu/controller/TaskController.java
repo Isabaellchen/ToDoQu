@@ -1,6 +1,7 @@
 package rocks.isor.todoqu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import rocks.isor.todoqu.model.dao.TaskDAO;
+import rocks.isor.todoqu.model.dto.Category;
 import rocks.isor.todoqu.model.dto.Task;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
 
     @Autowired
@@ -46,36 +47,19 @@ public class TaskController {
         return taskDAO.parent(uuid);
     }
 
+    @GetMapping("/{id}/categories")
+    public List<Category> getTaskCategories(@PathVariable("id") UUID uuid) {
+        return taskDAO.categories(uuid);
+    }
+
     @PostMapping
-    public Task createTask(
-            @RequestParam String title,
-            @RequestParam Optional<String> description,
-            @RequestParam Optional<Date> procrastinateUntil,
-            @RequestParam Optional<Date> dueDate
-    ) {
-        return taskDAO.create(
-                title,
-                description.orElse(null),
-                procrastinateUntil.orElse(null),
-                dueDate.orElse(null)
-        );
+    public Task createTask(@RequestBody Task task) {
+        return taskDAO.create(task);
     }
 
     @PostMapping("/{id}/todo")
-    public Task addTodo(
-            @PathVariable("id") UUID uuid,
-            @RequestParam String title,
-            @RequestParam Optional<String> description,
-            @RequestParam Optional<Date> procrastinateUntil,
-            @RequestParam Optional<Date> dueDate
-    ) {
-        return taskDAO.addTodo(
-                uuid,
-                title,
-                description.orElse(null),
-                procrastinateUntil.orElse(null),
-                dueDate.orElse(null)
-        );
+    public Task addTodo(@PathVariable("id") UUID uuid, @RequestBody Task todo) {
+        return taskDAO.addTodo(uuid, todo);
     }
 
     @PutMapping("/{id}")
@@ -84,10 +68,7 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/done")
-    public Task setDone(
-            @PathVariable("id") UUID uuid,
-            @RequestParam Boolean done
-    ) {
+    public Task setDone(@PathVariable("id") UUID uuid, @RequestParam Boolean done) {
         return taskDAO.setDone(uuid, done);
     }
 

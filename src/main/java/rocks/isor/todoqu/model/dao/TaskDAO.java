@@ -4,9 +4,9 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.PropertyKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import rocks.isor.todoqu.model.dto.Category;
 import rocks.isor.todoqu.model.dto.Task;
 import rocks.isor.todoqu.model.dto.Todo;
 import rocks.isor.todoqu.service.GremlinService;
@@ -48,39 +48,25 @@ public class TaskDAO {
         gremlinService.createVertexProperty("done", Boolean.class);
     }
 
-    public Task create(String title, String description, Date procrastinateUntil, Date dueDate) {
-        return Task.fromVertex(createVertex(title, description, procrastinateUntil, dueDate));
+    public Task create(Task task) {
+        return Task.fromVertex(createVertex(task));
     }
 
-    public Vertex createVertex(String title, String description, Date procrastinateUntil, Date dueDate) {
-        Task task = Task.builder()
-                .uuid(UUID.randomUUID())
-                .createdDate(new Date())
-                .updatedDate(null)
-                .deletedDate(null)
+    public Vertex createVertex(Task task) {
+        task.setUuid(UUID.randomUUID());
+        task.setCreatedDate(new Date());
 
-                .title(title)
-                .description(description)
-                .procrastinateUntil(procrastinateUntil)
-                .dueDate(dueDate)
-
-                .done(false)
-                .build();
+        task.setDone(false);
 
         return this.persistVertex(task);
     }
 
-    public Task addTodo(UUID uuid, String title, String description, Date procrastinateUntil, Date dueDate) {
+    public Task addTodo(UUID uuid, Task task) {
         Vertex parent = this.findVertex(uuid);
-        Vertex todo = this.createVertex(title, description, procrastinateUntil, dueDate);
+        Vertex todo = this.createVertex(task);
 
         Edge link = todoDAO.link(parent, todo);
-        Task origin = Task.fromVertex(link.outVertex());
-
-        origin.setTodos(todos(link.outVertex()));
-        origin.setParent(parent(link.outVertex()));
-
-        return origin;
+        return Task.fromVertex(link.inVertex());
     }
 
     public List<Task> findAll() {
@@ -96,8 +82,9 @@ public class TaskDAO {
         Vertex vertex = findVertex(uuid);
         Task task = Task.fromVertex(vertex);
 
-        task.setTodos(todos(vertex));
+        task.setTasks(todos(vertex));
         task.setParent(parent(vertex));
+        task.setCategories(categories(vertex));
 
         return task;
     }
@@ -136,6 +123,23 @@ public class TaskDAO {
             Todo relation = Todo.fromEdge(parents.next());
             result = relation.getOrigin();
         }
+
+        return result;
+    }
+
+    public List<Category> categories(UUID uuid) {
+        return categories(findVertex(uuid));
+    }
+
+    public List<Category> categories(Vertex vertex) {
+        Iterator<Edge> todos = vertex.edges(Direction.IN, "categorization");
+
+        List<Category> result = new ArrayList<>();
+
+        todos.forEachRemaining(edge -> {
+            Vertex outVertex = edge.outVertex();
+            result.add(Category.fromVertex(outVertex));
+        });
 
         return result;
     }

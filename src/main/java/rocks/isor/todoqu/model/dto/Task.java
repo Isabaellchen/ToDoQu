@@ -35,10 +35,13 @@ public class Task {
     private boolean done;
 
     @JsonProperty(access = Access.READ_ONLY)
-    private List<Task> todos;
+    private List<Task> tasks;
 
     @JsonProperty(access = Access.READ_ONLY)
     private Task parent;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    private List<Category> categories;
 
     public static Task fromVertex(Vertex vertex) {
         TaskBuilder builder = Task.builder();
