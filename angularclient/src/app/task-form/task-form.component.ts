@@ -14,9 +14,10 @@ export class TaskFormComponent {
 
   constructor(
     private route: ActivatedRoute,
-      private router: Router,
-        private taskService: TaskService) {
-    this.task = new Task();
+    private router: Router,
+    private taskService: TaskService
+  ) {
+      this.task = new Task();
   }
 
   onSubmit() {

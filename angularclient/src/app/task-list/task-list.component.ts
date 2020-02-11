@@ -1,22 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Task } from '../model/task';
-import { TaskService } from '../service/task.service';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent{
 
-  tasks: Task[];
+  @Input() tasks: Task[];
 
-  constructor(private taskService: TaskService) {
-  }
+  constructor() {
 
-  ngOnInit() {
-    this.taskService.findAll().subscribe(data => {
-      this.tasks = data;
-    });
   }
 }

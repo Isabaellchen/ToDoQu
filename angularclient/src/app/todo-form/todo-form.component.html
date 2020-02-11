@@ -1,0 +1,11 @@
+<form class="form-inline" *ngIf="parent" (ngSubmit)="onSubmit()" #todoForm="ngForm">
+    <label class="p-2" for="title">New Task:</label>
+    <input type="text" [(ngModel)]="task.title"
+           class="form-control p-2"
+           id="title"
+           name="title"
+           placeholder="What to do?"
+           required #title="ngModel">
+    <button type="submit" [disabled]="!todoForm.form.valid"
+            class="btn btn-primary p-2">Add</button>
+</form>

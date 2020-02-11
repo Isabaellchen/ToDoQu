@@ -2,22 +2,29 @@
   <div class="card-body">
     <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
       <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" [(ngModel)]="task.title"
-               class="form-control"
-               id="title"
-               name="title"
-               placeholder="Enter the title"
-               required #title="ngModel">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput [(ngModel)]="task.title"
+                 name="title"
+                 placeholder="Enter the title"
+                 required #title="ngModel">
+        </mat-form-field>
       </div>
-      <div [hidden]="!title.pristine" class="alert alert-danger">Title is required</div>
       <div class="form-group">
-        <label for="description">Description</label>
-        <input type="textarea" [(ngModel)]="task.description"
-               class="form-control"
-               id="description"
-               name="description"
-               placeholder="Enter the description">
+        <mat-form-field class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="task.description"
+                    name="description"
+                    placeholder="Enter the description">></textarea>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Due date:</mat-label>
+          <input matInput [matDatepicker]="picker" name="dueDate" [(ngModel)]="task.dueDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
       </div>
       <button type="submit" [disabled]="!taskForm.form.valid"
               class="btn btn-info">Submit</button>

@@ -1,24 +1,22 @@
-<div class="card my-5">
-  <div class="card-body">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-      <tr>
-        <th scope="col">id</th>
-        <th scope="col">Title</th>
-        <th scope="col">Description</th>
-        <th scope="col">Procrastinate until</th>
-        <th scope="col">Due date</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let task of tasks">
-        <td>{{ task.id }}</td>
-        <td>{{ task.title }}</td>
-        <td>{{ task.description }}</td>
-        <td>{{ task.procrastinateUntil }}</td>
-        <td>{{ task.dueDate }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<div *ngIf="tasks">
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Procrastinate until</th>
+      <th scope="col">Due date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let task of tasks">
+      <td><a [routerLink]="['/tasks', task.uuid]">{{ task.uuid }}</a></td>
+      <td>{{ task.title }}</td>
+      <td>{{ task.description }}</td>
+      <td>{{ task.procrastinateUntil }}</td>
+      <td>{{ task.dueDate }}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>

@@ -1,0 +1,11 @@
+<div *ngIf="task" class="card my-5">
+  <div class="card-body">
+    <div *ngIf="task.parent">
+      <a [routerLink]="['/tasks', task.parent.uuid]">{{ task.parent.title }}</a>
+    </div>
+    <h1>{{ task.title }}</h1>
+    <p>{{ task.description }}</p>
+    <app-task-list *ngIf="task.tasks" [tasks]="task.tasks"></app-task-list>
+    <app-todo-form [parent]="task"></app-todo-form>
+  </div>
+</div>
