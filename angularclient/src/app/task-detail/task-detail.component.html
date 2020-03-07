@@ -1,11 +1,13 @@
-<div *ngIf="task" class="card my-5">
-  <div class="card-body">
-    <div *ngIf="task.parent">
-      <a [routerLink]="['/tasks', task.parent.uuid]">{{ task.parent.title }}</a>
-    </div>
-    <h1>{{ task.title }}</h1>
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>{{ task.title }}</mat-card-title>
+    <mat-card-subtitle *ngIf="task.parent"><a [routerLink]="['/tasks', task.parent.uuid]">{{ task.parent.title }}</a></mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
     <p>{{ task.description }}</p>
-    <app-task-list *ngIf="task.tasks" [tasks]="task.tasks"></app-task-list>
+  </mat-card-content>
+  <app-task-list *ngIf="task.tasks" [tasks]="task.tasks"></app-task-list>
+  <mat-card-actions>
     <app-todo-form [parent]="task"></app-todo-form>
-  </div>
-</div>
+  </mat-card-actions>
+</mat-card>

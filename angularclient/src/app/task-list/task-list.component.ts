@@ -10,7 +10,4 @@ export class TaskListComponent{
 
   @Input() tasks: Task[];
 
-  constructor() {
-
-  }
 }

@@ -1,11 +1,12 @@
-<form class="form-inline" *ngIf="parent" (ngSubmit)="onSubmit()" #todoForm="ngForm">
-    <label class="p-2" for="title">New Task:</label>
-    <input type="text" [(ngModel)]="task.title"
-           class="form-control p-2"
-           id="title"
+<form class="form-inline" *ngIf="parent" (ngSubmit)="onSubmit(); todoForm.reset()" #todoForm="ngForm">
+  <mat-form-field class="example-full-width">
+    <mat-label>What else to do?</mat-label>
+    <input matInput [(ngModel)]="task.title"
            name="title"
-           placeholder="What to do?"
-           required #title="ngModel">
-    <button type="submit" [disabled]="!todoForm.form.valid"
-            class="btn btn-primary p-2">Add</button>
+           placeholder="Enter a title"
+           #title="ngModel">
+  </mat-form-field>
+  <button mat-icon-button type="submit" [disabled]="!task.title" aria-label="Example icon-button with a heart icon">
+    <mat-icon>add</mat-icon>
+  </button>
 </form>

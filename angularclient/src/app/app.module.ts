@@ -17,6 +17,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { TaskParentComponent } from './task-parent/task-parent.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -25,7 +30,8 @@ import { MatInputModule } from '@angular/material/input';
     TaskListAllComponent,
     TaskFormComponent,
     TaskDetailComponent,
-    TodoFormComponent
+    TodoFormComponent,
+    TaskParentComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +42,11 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     TaskService,
